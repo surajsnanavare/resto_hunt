@@ -1,6 +1,6 @@
 $(function() {
-    var zomatoApiKey = "7ecae529fc89c1c07c86c2c912ca7b88"
-    // var zomatoApiKey = "23555a9bad6314b88f9763385d010709"
+    // var zomatoApiKey = "7ecae529fc89c1c07c86c2c912ca7b88"
+    var zomatoApiKey = "23555a9bad6314b88f9763385d010709"
 
     var db_name = 'resto_hunt'
     var db_ver = '1.0'
@@ -186,10 +186,10 @@ $(function() {
         if(typeof(openDatabase) !== 'undefined')
         {
             resto_hunt.init.open();
-            // resto_hunt.init.createTable();
-            // resto_hunt.init.populateUsers();
-            // resto_hunt.init.populateCities();
-            // resto_hunt.init.populateRestaurants();
+            resto_hunt.init.createTable();
+            resto_hunt.init.populateUsers();
+            resto_hunt.init.populateCities();
+            resto_hunt.init.populateRestaurants();
             // resto_hunt.init.populateReviews();
             resto_hunt.init.loadCityDropdown();
             resto_hunt.init.loadRestaurant();
