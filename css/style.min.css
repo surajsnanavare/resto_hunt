@@ -688,11 +688,11 @@ a:hover {
 }
 
 .rating-review {
-    border: none;
-    padding: 6px;
-    width: 37px;
+    order: none;
+    padding: 7px 10px;
+    width: 45px;
     margin: 2px 0px;
-    height: 37px;
+    height: 40px;
     background: orange;
     border-radius: 7px;
     font-size: 17px;

@@ -1,11 +1,7 @@
 $(function() {
-    // var zomatoApiKey = "7ecae529fc89c1c07c86c2c912ca7b88"
-    var zomatoApiKey = "23555a9bad6314b88f9763385d010709"
+    var zomatoApiKey = "7ecae529fc89c1c07c86c2c912ca7b88"
+    // var zomatoApiKey = "23555a9bad6314b88f9763385d010709"
 
-    // var id =  '2306';
-    // var url = "https://developers.zomato.com/api/v2.1/search?entity_type=city&entity_id=3&sort=rating"
-    // var reviews_url = 'https://api.zomato.com/v1/reviews.json/18591040/user?count=0&apikey=' + zomatoApiKey
-    // var url2 = "https://developers.zomato.com/api/v2.1/search?entity_id=3&entity_type=city&start=sort=rating"
     var db_name = 'resto_hunt'
     var db_ver = '1.0'
     var db_desc = 'Restaurant database for web app'
@@ -45,9 +41,9 @@ $(function() {
 		var database = resto_hunt.init.db;
 		database.transaction(function(tx){
             tx.executeSql('CREATE TABLE IF NOT EXISTS restaurants (ID INTEGER PRIMARY KEY ASC,name VARCHAR,address TEXT,overall_rating VARCHAR,reviews TEXT,ref_links TEXT,thumbnail TEXT,city VARCHAR)');
-            tx.executeSql('CREATE TABLE IF NOT EXISTS users (ID INTEGER PRIMARY KEY ASC,name VARCHAR,email TEXT,phone VARCHAR, password VARCHAR,created_at VARCHAR)');
+            tx.executeSql('CREATE TABLE IF NOT EXISTS users (ID TEXT,name VARCHAR,email TEXT,phone VARCHAR, password VARCHAR,created_at VARCHAR)');
             tx.executeSql('CREATE TABLE IF NOT EXISTS cities (ID INTEGER PRIMARY KEY ASC,name VARCHAR,created_at VARCHAR)');
-            tx.executeSql('CREATE TABLE IF NOT EXISTS reviews (ID INTEGER PRIMARY KEY ASC,resto_id TEXT,user_name VARCHAR,rating VARCHAR,review TEXT, created_at VARCHAR)');
+            tx.executeSql('CREATE TABLE IF NOT EXISTS reviews (resto_id TEXT,user_name VARCHAR,rating VARCHAR,review TEXT)');
 		});
     }
 
@@ -101,7 +97,6 @@ $(function() {
                 for(var i=0; i< result.rows.length;i++){
                     var item = result.rows.item(i);
                     var resto_id = item.ID;
-                    // console.log(i,resto_id);
                     $.ajax({
                         url:  'https://api.zomato.com/v1/reviews.json/'+resto_id+'/user?count=2&apikey=' + zomatoApiKey,
                         type: 'get',
@@ -110,9 +105,8 @@ $(function() {
                             reviews.forEach(item => {
                                 var review = item.review;
                                 var database2 = resto_hunt.init.db;
-                                // console.log(resto_id);
                                 database2.transaction(function(tx2){
-                                    tx2.executeSql('INSERT INTO reviews (ID,resto_id,user_name,rating,review,created_at) VALUES (?,?,?,?,?,?)',[review.id,resto_id,review.userName,review.rating,review.reviewText,review.reviewTimeFriendly]);
+                                    tx2.executeSql('INSERT INTO reviews (resto_id,user_name,rating,review) VALUES (?,?,?,?)',[resto_id,review.userName,review.rating,review.reviewText]);
                                 });                                
                             });
                         }
@@ -129,7 +123,12 @@ $(function() {
                 var list = $('#citySelect');
                 list.empty();
                 for(var i=0; i< result.rows.length;i++){
-                    list.append('<option id="' + result.rows[i].city + '">'+ result.rows[i].city + '</option>');
+                    var city = result.rows[i];
+                    if(city.city=="New Panvel"){
+                        list.append('<option id="' + city.city + '" selected>'+ city.city + '</option>');
+                    }else{
+                        list.append('<option id="' + city.city + '">'+ city.city + '</option>');
+                    }
                 }  
             })
         })
@@ -140,42 +139,44 @@ $(function() {
             city = "New Panvel";
             var database = resto_hunt.init.db;
             database.transaction(function(tx){
-                tx.executeSql('SELECT * FROM restaurants WHERE city="'+city+'" LIMIT 1',[],function(tx,result){
-                var restos = $('#restos');
-                restos.empty();
-                for(var i=0; i< result.rows.length;i++){
-                    var resto = result.rows[i];
-                    restos.append('<div style="padding:10px;"> '+
-                        '<a href="restaurant.html" style="text-decoration: none;color: black;"> '+
-                            '<div class="card" style="width: 18rem;padding: 0px 10px;"> '+
-                                '<img style="padding-top: 15px;" src="'+ resto.thumbnail +'" class="card-img-top" width="100px">'+
-                                '<div class="card-body" style="padding: 15px 0px;">'+
-                                '<h5 class="card-title">'+ resto.name +'</h5>'+
-                                '<h6 class="card-text"><small>'+ resto.address +'</small></h6>'+
-                                '<span>Rating:&nbsp;&nbsp;</span>'+
-                                    '<span class="rating-emoji" id="emoji-'+i+'1">😠</span>'+
-                                    '<span class="rating-emoji" id="emoji-'+i+'2>😦</span>'+
-                                    '<span class="rating-emoji" id="emoji-'+i+'3>😑</span>'+
-                                    '<span class="rating-emoji" id="emoji-'+i+'4>😀</span>'+
-                                    '<span class="rating-emoji" id="emoji-'+i+'5>😍</span>'+
-                                '</div>'+
-                            '</div>'+
-                        '</a>'+
-                    '</div>');
-                    var emoji_rating_active = "false";
-                    if(resto.rating > 0 && resto.rating <=1){
-                       emoji_rating = "😍";
-                    }else if(resto.rating > 1 && resto.rating <=2){
-                       emoji_rating = "😍";
-                    }else if(resto.rating > 1 && resto.rating <=2){
-                       emoji_rating = "😍";
-                    }else if(resto.rating > 1 && resto.rating <=2){
-                       emoji_rating = "😍";
-                    }else if(resto.rating > 1 && resto.rating <=2){
-                       emoji_rating = "😍";
-                    }
+                tx.executeSql('SELECT * FROM restaurants WHERE city="'+city+'" ORDER BY overall_rating DESC',[],function(tx,result){
+                    var restos = $('#restos');
+                    restos.empty();
+                    for(var i=0; i< result.rows.length;i++){
+                        var resto = result.rows[i];
+                        var active_1 = active_2 = active_3 = active_4 = active_5 = '';
 
-                }
+                        if(resto.overall_rating > 0 && resto.overall_rating <=1){
+                            active_1 = 'active';
+                        }else if(resto.overall_rating > 1 && resto.overall_rating <=2){
+                            active_2 = 'active';
+                        }else if(resto.overall_rating > 2 && resto.overall_rating <=3){
+                            active_3 = 'active'; 
+                        }else if(resto.overall_rating > 3 && resto.overall_rating <=4){
+                            active_4 = 'active';
+                        }else if(resto.overall_rating > 4 && resto.overall_rating <=5){
+                            active_5 = 'active';
+                        }
+
+                        var emoji = '<span class="rating-emoji '+active_1+'">😠</span>'+
+                                    '<span class="rating-emoji '+active_2+'">😦</span>'+
+                                    '<span class="rating-emoji '+active_3+'">😑</span>'+
+                                    '<span class="rating-emoji '+active_4+'">😀</span>'+
+                                    '<span class="rating-emoji '+active_5+'">😍</span>';
+
+                        restos.append('<div style="padding:10px;"> '+
+                            '<a href="restaurant.html?restoId='+ resto.ID +'" style="text-decoration: none;color: black;"> '+
+                                '<div class="card" style="width: 18rem;padding: 0px 10px;height:350px"> '+
+                                    '<img style="padding-top: 15px;" src="'+ resto.thumbnail +'" class="card-img-top" width="100px" height="200px">'+
+                                    '<div class="card-body" style="padding: 15px 0px;">'+
+                                        '<h5 class="card-title">'+ resto.name +'</h5>'+
+                                        '<h6 class="card-text"><small><p style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;" title="'+resto.address+'">'+ resto.address +'</p></small></h6>'+
+                                        '<span>Rating:&nbsp;&nbsp;</span>'+ emoji +
+                                    '</div>'+
+                                '</div>'+
+                            '</a>'+
+                        '</div>');
+                    }
                 })
             })
         }        

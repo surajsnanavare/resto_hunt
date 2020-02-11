@@ -26,9 +26,10 @@
 
     <!-- Modernizr JS for IE8 support of HTML5 elements and media queries -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.js"></script>
-    <script src="/js/services.js"></script>
-    <script src="/js/load.js"></script>
     <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+    <script src="./db/init.js"></script>
+    <script src="./db/actions.js"></script>
+
 </head>
 
 <body data-spy="scroll" data-target="#navbar" class="static-layout" style="background: white;">    
@@ -54,14 +55,6 @@
 
                         <li class="nav-item active">
                             <a class="nav-link" href="signup.html">Signup</a>
-                        </li>
-        
-                        <li class="nav-item active">
-                            <a class="nav-link" href="apis/logout.php">Logout</a>
-                        </li>
-        
-                        <li class="nav-item active">
-                            <a class="nav-link" href="login.html">Login</a>
                         </li>
         
                     </div>
@@ -119,22 +112,20 @@
                                         Login to find best restaurants of around you!
                                     </span>
                                 </div>
-                                <form method="post" name="contact-us" action="">
                                     <div class="row">
 
                                         <div class="col-md-12 form-group">
-                                            <input type="number" class="form-control" id="phoneNumber" name="phoneNumber" placeholder="Phone">
+                                            <input type="number" class="form-control" id="phoneNumber" name="phoneNumber" placeholder="Phone" required>
                                         </div>
         
                                         <div class="col-md-12 form-group">
-                                            <input type="text" class="form-control" id="password" name="password" placeholder="Password">
+                                            <input type="password" class="form-control" id="password" name="password" placeholder="Password" required>
                                         </div>
         
                                         <div class="col-md-12 text-center">
-                                            <button class="btn btn-primary btn-shadow btn-lg" type="submit" name="submit">Login</button>
+                                            <button class="btn btn-primary btn-shadow btn-lg" type="submit" name="submit" onclick="login()">Login</button>
                                         </div>
                                     </div>
-                                </form>
                             </div>
                         </div>
                     </div>
@@ -142,13 +133,13 @@
             </div>
         </div>
         
-        <div class="col-lg-12 col-md-12 col-sm-12 pt-4 pb-3 mt-5" style="box-shadow:1rem 0.2rem 1rem rgba(0,0,0,.15)!important">
+        <div class="col-lg-12 col-md-12 col-sm-12 pt-4 pb-3 mt-5" style="box-shadow:1rem 0.2rem 1rem rgba(0,0,0,.15)!important;">
             <div class="container">
                 <div class="row">
                     <div class="col-lg-5">
                         <div class="footer-widget pr-lg-5 pr-0">
-                            <img src="img/logo.png" class="img-fluid footer-logo" alt="">
-                            <p>Need help to boost your business? Connect with  <br> Mr. Perfect <a target="blank" href=" https://surajnanavare.com">www.surajnanavare.com</a></p>
+                            <img src="img/logo.png" class="img-fluid footer-logo">
+                            <p>The place to find heaven for your food!</p>
                         </div>
                         
                     </div>
@@ -156,7 +147,6 @@
 
                     </div>
                     <div class="col-lg-4">
-
                     </div>
                 </div>
             </div>

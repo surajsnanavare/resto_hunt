@@ -26,13 +26,9 @@
 
     <!-- Modernizr JS for IE8 support of HTML5 elements and media queries -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.js"></script>
-    <script src="./js/services.js"></script>
-    <script src="./js/load.js"></script>
-
-    <script>
-        window.localStorage.setItem('name', JSON.stringify('{"name":"Suraj Nanavare"}'));
-        var name = window.localStorage.getItem('name');
-    </script>
+    <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+    <script src="./db/init.js"></script>
+    <script src="./db/actions.js"></script>
 </head>
 
 <body data-spy="scroll" data-target="#navbar" class="static-layout" style="background: white;">    
@@ -57,15 +53,11 @@
                         </li>
 
                         <li class="nav-item active">
-                            <a class="nav-link" href="signup.html">Signup</a>
+                            <a class="nav-link" style="cursor: pointer;" onclick="logout()">Logout</a>
                         </li>
-        
-                        <li class="nav-item active">
-                            <a class="nav-link" href="apis/logout.php">Logout</a>
-                        </li>
-        
-                        <li class="nav-item active">
-                            <a class="nav-link" href="login.html">Login</a>
+
+                        <li class="nav-item active" style="background: #f7a533;border-radius: 6px;font-weight: bold;">
+                            <a class="nav-link">Welcome, <span id="userName"></span></a>
                         </li>
         
                     </div>
@@ -75,92 +67,36 @@
     </nav>
     <div class="row" style="margin:0px;">
         <div class="col-lg-12 col-md-12 col-sm-12 mb-4" id="main">
-            <div class="row" style="padding: 35px 50px;">
-                <div class="col-sm-12 col-md-6 col-lg-6" style="padding: 0px 50px;">
-                    <img style="padding-top: 15px;" src="https://b.zmtcdn.com/data/pictures/5/18140705/a121c28e47a70a4326d458933bd4d3ab.jpg" class="card-img-top" width="100%">
-                </div>
-                <div class="col-sm-12 col-md-6 col-lg-6" style="padding: 10px 50px;" >
-                    <h3>SodaBottleOpenerWala</h3>
-                    <h6 class="card-text"><small>Floor, The Capital Building, G Block, Bandra Kurla Complex, Mumbai</small></h6>
-                    <span class="rating-emoji-l">😠</span> <span class="rating-emoji-l">😦</span> <span class="rating-emoji-l active">😑</span> <span class="rating-emoji-l">😀</span> <span class="rating-emoji-l">😍</span>
-
-                    <div class="card" style="padding: 0px 10px;margin: 10px 1px;">
-                        <div class="card-body" style="padding: 15px 0px;">
-                            <div class="row">
-                                <div class="col-sm-9 col-md-9 col-lg-9">
-                                    <h5 class="card-title">SodaBottleOpenerWala: Home</h5>
-                                    <h6 class="card-text"><small>www.sodabottleopenerwala.in</small></h6>        
-                                </div>
-                                <div class="col-sm-3 col-md-3 col-lg-3" style="padding: 10px 0px;">
-                                    <center>
-                                        <a href="http://www.sodabottleopenerwala.in" target="blank"><img src="./img/link.png" width="30px"/></a>
-                                    </center>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
+           
         </div>
 
         <!-- <div class="col-lg-12 col-md-12 col-sm-12 pb-3" style="padding: 0px 46px;overflow-y: hidden;overflow-x: scroll;height: 300px;display: flex;justify-content:space-evenly;width:100%;"> -->
         <div class="col-lg-12 col-md-12 col-sm-12 pb-3" style="padding: 0px 95px;display: flex;flex-wrap: wrap;">
             <div class="col-lg-12 col-md-12 col-sm-12" style="padding: 0px 0px">
                 <h2>Customer Comments & Ratings</h2>
+                <h6>Please leave your comments and rating for others!</h6>
             </div>
-            <div class="card" style="min-width:23rem;max-width:18rem;max-height:10rem;padding: 0px 10px;margin: 10px 1px;float: left;justify-content: center;">
-                <div class="row no-gutters">
-                    <div class="col-md-4">
-                        <img width="100%" src="https://surajnanavare.com/assets/img/about/about8.2.png"/>
-                    </div>
-                    <div class="col-md-8 p-2">
-                        <h5 class="card-title rating-review">3.4</h5>
-                        <h5 class="card-title" style="padding: 2px 0px;margin: 2px 0px;"><b>Suraj Nanavare</b>
-                        </h5>
-                        <p class="card-text" style="padding-top: 1px;">Lovely food</p>
-                    </div>
+            <div class="col-lg-12 col-md-12 col-sm-12" style="padding: 0px 0px">
+                <div style="padding: 7px 0px;"> 
+                    <span style="cursor: pointer;" class="rating-emoji-l" name="emojiRate" onclick="selectRating(this)" id="emoji-1">😠</span>
+                    <span style="cursor: pointer;" class="rating-emoji-l" name="emojiRate" onclick="selectRating(this)" id="emoji-2">😦</span>
+                    <span style="cursor: pointer;" class="rating-emoji-l" name="emojiRate" onclick="selectRating(this)" id="emoji-3">😑</span>
+                    <span style="cursor: pointer;" class="rating-emoji-l" name="emojiRate" onclick="selectRating(this)" id="emoji-4">😀</span>
+                    <span style="cursor: pointer;" class="rating-emoji-l" name="emojiRate" onclick="selectRating(this)" id="emoji-5">😍</span>
+                    <input type="input" id="finalRating" style="opacity: 0;" value="0" disabled>
                 </div>
-            </div>            
-            <div class="card" style="min-width:23rem;max-width:18rem;max-height:10rem;padding: 0px 10px;margin: 10px 1px;float: left;justify-content: center;">
-                <div class="row no-gutters">
-                    <div class="col-md-4">
-                        <img width="100%" src="https://surajnanavare.com/assets/img/about/about8.2.png"/>
-                    </div>
-                    <div class="col-md-8 p-2">
-                        <h5 class="card-title rating-review">3.4</h5>
-                        <h5 class="card-title" style="padding: 2px 0px;margin: 2px 0px;"><b>Suraj Nanavare</b>
-                        </h5>
-                        <p class="card-text" style="padding-top: 1px;">Lovely food</p>
-                    </div>
+                <div>
+                    <textarea class="form-control" style="width: 40%;" rows="2" id="finalReview"></textarea>
+                    <input type="button" class="btn btn-lg btn-primary m-2" onclick="addReview()" value="Submit">
                 </div>
-            </div>            
-            <div class="card" style="min-width:23rem;max-width:18rem;max-height:10rem;padding: 0px 10px;margin: 10px 1px;float: left;justify-content: center;">
-                <div class="row no-gutters">
-                    <div class="col-md-4">
-                        <img width="100%" src="https://surajnanavare.com/assets/img/about/about8.2.png"/>
-                    </div>
-                    <div class="col-md-8 p-2">
-                        <h5 class="card-title rating-review">3.4</h5>
-                        <h5 class="card-title" style="padding: 2px 0px;margin: 2px 0px;"><b>Suraj Nanavare</b>
-                        </h5>
-                        <p class="card-text" style="padding-top: 1px;">Lovely food</p>
-                    </div>
+                <hr>
+                <h4>Latest reviews and ratings</h4>
+            </div>
+            <div id="reviews">
+                <div>
+                    <h3>No reviews and ratings yet!</h3>
                 </div>
-            </div>            
-            <div class="card" style="min-width:23rem;max-width:18rem;max-height:10rem;padding: 0px 10px;margin: 10px 1px;float: left;justify-content: center;">
-                <div class="row no-gutters">
-                    <div class="col-md-4">
-                        <img width="100%" src="https://surajnanavare.com/assets/img/about/about8.2.png"/>
-                    </div>
-                    <div class="col-md-8 p-2">
-                        <h5 class="card-title rating-review">3.4</h5>
-                        <h5 class="card-title" style="padding: 2px 0px;margin: 2px 0px;"><b>Suraj Nanavare</b>
-                        </h5>
-                        <p class="card-text" style="padding-top: 1px;">Lovely food</p>
-                    </div>
-                </div>
-            </div>            
+            </div>
 
         </div>
         
@@ -169,7 +105,7 @@
                 <div class="row">
                     <div class="col-lg-5">
                         <div class="footer-widget pr-lg-5 pr-0">
-                            <img src="img/logo.png" class="img-fluid footer-logo" alt="">
+                            <img src="img/logo.png" class="img-fluid footer-logo">
                             <p>Need help to boost your business? Connect with  <br> Mr. Perfect <a target="blank" href=" https://surajnanavare.com">www.surajnanavare.com</a></p>
                         </div>
                         
@@ -184,7 +120,9 @@
             </div>
         </div>
     </div>
-
+    <script>
+        $('#userName').append(localStorage.getItem('user'));
+    </script>
 </body>
 
 </html>

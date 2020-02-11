@@ -54,17 +54,13 @@
                         </li>
 
                         <li class="nav-item active">
-                            <a class="nav-link" href="signup.html">Signup</a>
+                            <div class="nav-link" style="cursor: pointer;" onclick="logout()">Logout</div>
                         </li>
-        
-                        <li class="nav-item active">
-                            <a class="nav-link" href="apis/logout.php">Logout</a>
+
+                        <li class="nav-item active" style="background: #f7a533;border-radius: 6px;font-weight: bold;">
+                            <a class="nav-link">Welcome, <span id="userName"></span></a>
                         </li>
-        
-                        <li class="nav-item active">
-                            <a class="nav-link" href="login.html">Login</a>
-                        </li>
-        
+
                     </div>
                 </ul>
             </div>
@@ -74,20 +70,19 @@
         <div class="col-lg-12 col-md-12 col-sm-12 mb-4" style="margin:30px 50px;">
             <div class="row pull-right">
                 <div class="col-sm-12 col-md-2 col-lg-2">
-                    <select class="form-control" style="width: 170;margin-right: 135px;" id="citySelect" onchange="loadRestaurant('ab')"></select>    
+                    <select class="form-control" style="width: 170;margin-right: 135px;" id="citySelect" onchange="loadRestaurant(this)"></select>    
                 </div>
             </div>
         </div>
         <div class="col-lg-12 col-md-12 col-sm-12 mb-4" style="margin:10px 60px;">
-            <div class="row" id="restos"></div>
-        </div>
-        
-        <div class="col-lg-12 col-md-12 col-sm-12 pt-4 pb-3 mt-5" style="box-shadow:1rem 0.2rem 1rem rgba(0,0,0,.15)!important">
+            <div class="row" style="margin-left: 40px;" id="restos"></div>
+        </div>     
+        <div class="col-lg-12 col-md-12 col-sm-12 pt-4 pb-3 mt-5" style="box-shadow:1rem 0.2rem 1rem rgba(0,0,0,.15)!important;">
             <div class="container">
                 <div class="row">
                     <div class="col-lg-5">
                         <div class="footer-widget pr-lg-5 pr-0">
-                            <img src="img/logo.png" class="img-fluid footer-logo" alt="">
+                            <img src="img/logo.png" class="img-fluid footer-logo">
                             <p>The place to find heaven for your food!</p>
                         </div>
                         
@@ -101,6 +96,10 @@
             </div>
         </div>
     </div>
+
+    <script>
+        $('#userName').append(localStorage.getItem('user'));
+    </script>
 
     <!-- Main JS -->
     <script src="js/app.min.js "></script>
