@@ -66,15 +66,25 @@
             </div>
         </div>
     </nav>
-    <div class="row" id="main">
-        <div class="col-lg-12 col-md-12 col-sm-12 mb-4" style="margin:30px 50px;">
+    <div class="row" id="main" style="margin-left: 40px;">
+        <div class="col-lg-12 col-md-12 col-sm-12 mb-4" style="margin-top:20px;margin-bottom:20px">
             <div class="row pull-right">
                 <div class="col-sm-12 col-md-2 col-lg-2">
                     <select class="form-control" style="width: 170;margin-right: 135px;" id="citySelect" onchange="loadRestaurant(this)"></select>    
                 </div>
             </div>
         </div>
-        <div class="col-lg-12 col-md-12 col-sm-12 mb-4" style="margin:10px 60px;">
+
+        <div class="col-lg-12 col-md-12 col-sm-12 mb-4" style="margin-top:20px;margin-bottom:20px">
+            <h4 style="margin-left: 40px;">Top Picks</h4>
+            <div class="row" style="margin-left: 40px;"  id="topPicks"></div>
+        </div>
+        
+        <div class="col-lg-12 col-md-12 col-sm-12 mb-4" style="margin-top:20px;margin-bottom:20px">
+            <h4 style="margin-left: 40px;">All Restaurants</h4>
+        </div>
+
+        <div class="col-lg-12 col-md-12 col-sm-12 mb-4" style="margin-top:20px;margin-bottom:20px">
             <div class="row" style="margin-left: 40px;" id="restos"></div>
         </div>     
         <div class="col-lg-12 col-md-12 col-sm-12 pt-4 pb-3 mt-5" style="box-shadow:1rem 0.2rem 1rem rgba(0,0,0,.15)!important;">

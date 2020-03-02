@@ -182,6 +182,59 @@ $(function() {
         }        
 
     }
+
+    resto_hunt.init.loadTopRestaurant = function (city) {
+        if(city==undefined){
+            city = "New Panvel";
+            var database = resto_hunt.init.db;
+            database.transaction(function(tx){
+                tx.executeSql('SELECT * FROM restaurants WHERE city="'+city+'" ORDER BY overall_rating DESC LIMIT 4',[],function(tx,result){
+                    var restos = $('#topPicks');
+                    restos.empty();
+                    for(var i=0; i< result.rows.length;i++){
+                        var resto = result.rows[i];
+                        var active_1 = active_2 = active_3 = active_4 = active_5 = '';
+
+                        if(resto.overall_rating > 0 && resto.overall_rating <=1){
+                            active_1 = 'active';
+                        }else if(resto.overall_rating > 1 && resto.overall_rating <=2){
+                            active_2 = 'active';
+                        }else if(resto.overall_rating > 2 && resto.overall_rating <=3){
+                            active_3 = 'active'; 
+                        }else if(resto.overall_rating > 3 && resto.overall_rating <=4){
+                            active_4 = 'active';
+                        }else if(resto.overall_rating > 4 && resto.overall_rating <=5){
+                            active_5 = 'active';
+                        }
+
+                        var emoji = '<span class="rating-emoji '+active_1+'">😠</span>'+
+                                    '<span class="rating-emoji '+active_2+'">😦</span>'+
+                                    '<span class="rating-emoji '+active_3+'">😑</span>'+
+                                    '<span class="rating-emoji '+active_4+'">😀</span>'+
+                                    '<span class="rating-emoji '+active_5+'">😍</span>';
+
+                        restos.append('<div style="padding:10px;"> '+
+                            '<a href="restaurant.html?restoId='+ resto.ID +'" style="text-decoration: none;color: black;"> '+
+                                '<div class="card" style="width: 18rem;padding: 0px 10px;height:350px"> '+
+                                    '<img style="padding-top: 15px;" src="'+ resto.thumbnail +'" class="card-img-top" width="100px" height="200px">'+
+                                    '<div class="card-body" style="padding: 15px 0px;">'+
+                                        '<h5 class="card-title">'+ resto.name +'</h5>'+
+                                        '<h6 class="card-text"><small><p style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;" title="'+resto.address+'">'+ resto.address +'</p></small></h6>'+
+                                        '<span>Rating:&nbsp;&nbsp;</span>'+ emoji +
+                                        '<div class="pull-right">'+
+                                            '<span class="btn btn-sm btn-success" style="margin-bottom:-10px;">For You</span>'+
+                                        '</div>'+    
+                                    '</div>'+
+                                '</div>'+
+                            '</a>'+
+                        '</div>');
+                    }
+                })
+            })
+        }        
+
+    }
+    
     function init(){
         if(typeof(openDatabase) !== 'undefined')
         {
@@ -193,6 +246,7 @@ $(function() {
             // resto_hunt.init.populateReviews();
             resto_hunt.init.loadCityDropdown();
             resto_hunt.init.loadRestaurant();
+            resto_hunt.init.loadTopRestaurant();
         }
         else
         {
