@@ -95,6 +95,7 @@ function loadTopRestaurant(city) {
 
                     restos.append('<div style="padding:10px;"> '+
                         '<a href="restaurant.html?restoId='+ resto.ID +'" style="text-decoration: none;color: black;"> '+
+                            '<div class="card" style="width: 18rem;padding: 0px 10px;height:350px"> '+
                                 '<img style="padding-top: 15px;" src="'+ resto.thumbnail +'" class="card-img-top" width="100px" height="200px">'+
                                 '<div class="card-body" style="padding: 15px 0px;">'+
                                     '<h5 class="card-title">'+ resto.name +'</h5>'+
@@ -118,44 +119,6 @@ if(a.indexOf("restaurant.html")!=-1){
     if(a.indexOf("=")!=-1 && a.indexOf("?")!=-1){
         var restoId = a.substring(a.indexOf("=")+1);
         
-        database.transaction(function(tx){
-            tx.executeSql('SELECT * FROM reviews WHERE resto_id="'+restoId+'"',[],function(tx,result){
-                var ratings = result.rows;
-                for(var i =0; i< ratings.length; i++){
-                    if(ratings[i].rating=='1'){
-                        rating_stat['1'] = Number(rating_stat['1']) + Number(1);
-                    }
-                    if(ratings[i].rating=='2'){
-                        rating_stat['2'] = Number(rating_stat['2']) + Number(1);
-                    }
-                    if(ratings[i].rating=='3'){
-                        rating_stat['3'] = Number(rating_stat['3']) + Number(1);
-                    }
-                    if(ratings[i].rating=='4'){
-                        rating_stat['4'] = Number(rating_stat['4']) + Number(1);
-                    }
-                    if(ratings[i].rating=='5'){
-                        rating_stat['5'] = Number(rating_stat['5']) + Number(1);
-                    }
-                }
-                total_ratings = Number(rating_stat['1']) + Number(rating_stat['2']) + Number(rating_stat['3'])  + Number(rating_stat['4']) + Number(rating_stat['5']);
-                for(var j=1;j<=5;j++){
-                    if(rating_stat[j]){
-                        rating_stat[j] = Number(Math.round((rating_stat[j]/total_ratings)*100)) + '%';
-                    }else{
-                        rating_stat[j] = '0%';
-                    }
-                }
-                // rating_stat['1'] = Number(Math.round((rating_stat['1']/total_ratings)*100)) + '%';
-                // rating_stat['2'] = Number(Math.round((rating_stat['2']/total_ratings)*100)) + '%';
-                // rating_stat['3'] = Number(Math.round((rating_stat['3']/total_ratings)*100)) + '%';
-                // rating_stat['4'] = Number(Math.round((rating_stat['4']/total_ratings)*100)) + '%';
-                // rating_stat['5'] = Number(Math.round((rating_stat['5']/total_ratings)*100)) + '%';
-                console.log(total_ratings);
-                console.log(rating_stat);
-            })
-        })
-
         database.transaction(function(tx){
             tx.executeSql('SELECT * FROM restaurants WHERE ID="'+restoId+'"',[],function(tx,result){
                 var restoDetails = $('#main');
@@ -207,40 +170,13 @@ if(a.indexOf("restaurant.html")!=-1){
                                     '</div>'+    
                                 '</div>'+
                             '</div>'+
-                            '<h4 style="margin-top:10px";>Star Rating</h4>'+
-                            '<div id="starRating"></div>'+
                         '</div>'+
                     '</div>')
                 
-                };  
-                    var restoRatingDetails = $('#starRating');
-                    restoRatingDetails.append(
-                        '<div class="pull-left"><span>5 &nbsp;&nbsp;</span></div>'+
-                        '<div class="progress" style="height:25px;">'+
-                            '<div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" style="width:'+rating_stat['5']+';background:orange">'+rating_stat['5']+'</div>'+
-                        '</div>'+
-                        '<div class="pull-left"><span>4 &nbsp;&nbsp;</span></div>'+
-                        '<div class="progress" style="height:25px;">'+
-                            '<div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" style="width:'+rating_stat['4']+';background:orange">'+rating_stat['4']+'</div>'+
-                        '</div>'+
-                        '<div class="pull-left"><span>3 &nbsp;&nbsp;</span></div>'+
-                        '<div class="progress" style="height:25px;">'+
-                            '<div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" style="width:'+rating_stat['3']+';background:orange">'+rating_stat['3']+'</div>'+
-                        '</div>'+
-                        '<div class="pull-left"><span>2 &nbsp;&nbsp;</span></div>'+
-                        '<div class="progress" style="height:25px;">'+
-                            '<div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" style="width:'+rating_stat['2']+';background:orange">'+rating_stat['2']+'</div>'+
-                        '</div>'+
-                        '<div class="pull-left"><span>1 &nbsp;&nbsp;</span></div>'+
-                        '<div class="progress" style="height:25px;">'+
-                            '<div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" style="width:'+rating_stat['1']+';background:orange">'+rating_stat['1']+'</div>'+
-                        '</div>'
-                    );
-                    
+                };            
 
             })
         })
-
         database.transaction(function(tx){
             tx.executeSql('SELECT * FROM reviews WHERE resto_id="'+restoId+'"',[],function(tx,result){
                 var reviews = $('#reviews');
